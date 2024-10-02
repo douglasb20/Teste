@@ -18,6 +18,7 @@ describe('CustomerController e2e tests', () => {
   let data: any;
   let customers: Customers[];
   let app: INestApplication<any>;
+  const baseUrl = 'http://localhost:3001';
 
   const dataSourceTest: DataSourceOptions = {
     type: 'mysql',

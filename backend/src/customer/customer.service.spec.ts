@@ -14,6 +14,7 @@ describe('CustomerService', () => {
   let customerRepository: Repository<Customers>;
   let measureRepository: Repository<Measures>;
   let dataSource: DataSource;
+  const baseUrl = 'http://localhost:3001';
 
   const dataSourceTest: DataSourceOptions = {
     type: 'mysql',
@@ -66,16 +67,16 @@ describe('CustomerService', () => {
   describe('findSpecific', () => {
 
     it('should throw ErrorBadRequest if measure_type is invalid', async () => {
-      await expect(service.findSpecific(1, 'INVALID')).rejects.toThrow(ErrorBadRequest);
+      await expect(service.findSpecific(1, baseUrl, 'INVALID')).rejects.toThrow(ErrorBadRequest);
     });
 
     it('should throw ErrorNotFound if customer is not found', async () => {
-      await expect(service.findSpecific(999)).rejects.toThrow(ErrorNotFound);
+      await expect(service.findSpecific(999, baseUrl)).rejects.toThrow(ErrorNotFound);
     });
 
     it('should throw ErrorNotFound if no measures are found', async () => {
       await customerRepository.save({ id: 1, costumer_uuid: uuidV4(), customer_name: 'Teste Customer' });
-      await expect(service.findSpecific(1)).rejects.toThrow(ErrorNotFound);
+      await expect(service.findSpecific(1, baseUrl)).rejects.toThrow(ErrorNotFound);
     });
 
     it('should return customer with measures when customer and measures are found', async () => {
@@ -91,7 +92,7 @@ describe('CustomerService', () => {
       };
       const newMeasure = await measureRepository.save(dataMeasure)
       delete newMeasure.customers;
-      const result = await service.findSpecific(1, 'WATER');
+      const result = await service.findSpecific(1, baseUrl, 'WATER');
       expect(result).toEqual({
         customer_code: newCustomer.id,
         measures: [newMeasure],
@@ -111,7 +112,7 @@ describe('CustomerService', () => {
       };
       const newMeasure = await measureRepository.save(dataMeasure)
       delete newMeasure.customers;
-      const result = await service.findSpecific(1);
+      const result = await service.findSpecific(1, baseUrl);
       expect(result).toEqual({
         customer_code: newCustomer.id,
         measures: [newMeasure],
