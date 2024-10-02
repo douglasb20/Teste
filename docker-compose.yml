@@ -1,0 +1,64 @@
+services:
+  sysmeter-db:
+    container_name: sysmeter-db
+    command: --default-authentication-plugin=mysql_native_password
+    image: sysmeter-db
+    ports:
+      - 3309:3306
+    restart: always
+    networks:
+      sysmeter-network:
+        ipv4_address: 172.18.0.2
+    environment:
+      - MYSQL_ROOT_PASSWORD=U5zY^f7Yb*ec
+      - MYSQL_DATABASE=sysmeterdb
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_USER=sysmeter
+      - MYSQL_PASSWORD='Lh;G&!mTuz'
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+
+  sysmeterTest-db:
+    container_name: sysmeterTest-db
+    command: --default-authentication-plugin=mysql_native_password
+    image: sysmeter-db
+    ports:
+      - 3310:3306
+    restart: always
+    networks:
+      sysmeter-network:
+        ipv4_address: 172.18.0.3
+    environment:
+      - MYSQL_ROOT_PASSWORD=8K?St9$1cF2!
+      - MYSQL_DATABASE=sysmeterTestdb
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_USER=sysmeterTest
+      - MYSQL_PASSWORD=T9S5Ek3dBxd%
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+
+  sysmeter-api:
+    container_name: sysmeter-api
+    image: sysmeter-api
+    ports:
+      - 3001:3001
+    restart: always
+    networks:
+      sysmeter-network:
+        ipv4_address: 172.18.0.5
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    depends_on:
+      - sysmeter-db
+
+networks:
+  sysmeter-network:
+    name: sysmeter-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1
