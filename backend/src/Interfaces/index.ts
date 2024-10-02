@@ -1,7 +1,7 @@
 export type GeminiResponse = {
   candidates: Candidate[];
   usageMetadata: UsageMetadata;
-}
+};
 
 interface UsageMetadata {
   promptTokenCount: number;

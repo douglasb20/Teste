@@ -12,7 +12,7 @@ export class CustomerService {
   constructor(
     @InjectRepository(Customers)
     private customersRepository: Repository<Customers>,
-    private dataSource: DataSource
+    private dataSource: DataSource,
   ) {
     this.query = this.dataSource.createQueryRunner();
   }
@@ -21,17 +21,16 @@ export class CustomerService {
     return await this.customersRepository.find();
   }
 
-  async findSpecific(customer_code: number,baseUrl: string, measure_type?: string) {
-
+  async findSpecific(customer_code: number, baseUrl: string, measure_type?: string) {
     if (measure_type !== undefined && !['WATER', 'GAS'].includes(measure_type?.toUpperCase())) {
       throw new ErrorBadRequest('INVALID_TYPE', 'Tipo de medição não permitida');
     }
 
     const customer = await this.customersRepository.findOne({
       where: {
-        id: customer_code
+        id: customer_code,
       },
-      relations: ['measures']
+      relations: ['measures'],
     });
 
     if (!customer) {
@@ -39,8 +38,8 @@ export class CustomerService {
     }
 
     const measures = customer.measures
-      .filter(measure => !measure_type || measure.measure_type === measure_type.toUpperCase())
-      .map(e => ({...e, image_url: `${baseUrl}/images/${e.image_url}`}))
+      .filter((measure) => !measure_type || measure.measure_type === measure_type.toUpperCase())
+      .map((e) => ({ ...e, image_url: `${baseUrl}/images/${e.image_url}` }));
 
     if (measures.length === 0) {
       throw new ErrorNotFound('MEASURES_NOT_FOUND', 'Nenhuma leitura encontrada');
@@ -50,8 +49,8 @@ export class CustomerService {
 
     return {
       customer_code: customer.id,
-      measures: measures
-    }
+      measures: measures,
+    };
   }
 
   async createCustomer(createCustomerDto: CreateCustomerDto) {
@@ -59,7 +58,7 @@ export class CustomerService {
       await this.query.startTransaction();
 
       const customer = this.customersRepository.create({
-        customer_name: createCustomerDto.customer_name
+        customer_name: createCustomerDto.customer_name,
       });
 
       await this.query.manager.save(Customers, customer);

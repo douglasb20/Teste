@@ -1,5 +1,5 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
-import {v4 as uuidv4 } from 'uuid'
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 export class CreateCustomerTable1727729764902 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -35,7 +35,7 @@ export class CreateCustomerTable1727729764902 implements MigrationInterface {
             name: 'updated_at',
             type: 'datetime',
             isNullable: true,
-            default: 'NULL default NULL ON UPDATE CURRENT_TIMESTAMP'
+            default: 'NULL default NULL ON UPDATE CURRENT_TIMESTAMP',
           },
           {
             name: 'status',
@@ -50,12 +50,11 @@ export class CreateCustomerTable1727729764902 implements MigrationInterface {
     await queryRunner.query(
       `INSERT INTO \
             customers(costumer_uuid, customer_name) \
-            values('${uuidv4()}', "Douglas A. Silva")`
+            values('${uuidv4()}', "Douglas A. Silva")`,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('customers');
   }
-
 }

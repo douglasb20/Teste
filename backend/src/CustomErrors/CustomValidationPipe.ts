@@ -1,9 +1,4 @@
-import {
-  PipeTransform,
-  Injectable,
-  ArgumentMetadata,
-  BadRequestException,
-} from '@nestjs/common';
+import { PipeTransform, Injectable, ArgumentMetadata, BadRequestException } from '@nestjs/common';
 import { validate, ValidationError } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 
@@ -16,9 +11,9 @@ export class CustomValidationPipe implements PipeTransform {
 
     const object = plainToInstance(metatype, value);
     const errors: ValidationError[] = await validate(object);
-    
+
     if (errors.length > 0) {
-      const messages = errors.map(err => Object.values(err.constraints)).flat();
+      const messages = errors.map((err) => Object.values(err.constraints)).flat();
       throw new BadRequestException({
         error_code: 'INVALID_DATA',
         error_description: messages,

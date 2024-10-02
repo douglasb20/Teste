@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as bodyParser from 'body-parser';
 import { CustomValidationPipe } from 'CustomErrors/CustomValidationPipe';
+import * as fs from 'fs';
+import * as path from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +17,12 @@ async function bootstrap() {
   app.enableCors({
     origin: '*',
   });
+
+  // Criando a pasta files para receber as imagens de leitura
+  const destPath = path.join(__dirname, '..', '..', 'files', 'images');
+  if (!fs.existsSync(destPath)) {
+    await fs.promises.mkdir(destPath, { recursive: true });
+  }
   await app.listen(3001);
 }
 bootstrap();

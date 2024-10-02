@@ -6,16 +6,12 @@ import { ConfirmMeasureDto } from './dto/confirm-measure.dto';
 
 @Controller()
 export class MeasuresController {
-  constructor(private readonly measuresService: MeasuresService) { }
-  
+  constructor(private readonly measuresService: MeasuresService) {}
 
   // Endpoint pada fazer upload da leitura.
   @Post('upload')
   @HttpCode(HttpStatus.OK)
-  async uplodad(
-    @Body() createMeasureDto: CreateMeasureDto,
-    @Req() req: Request
-  ) {
+  async uplodad(@Body() createMeasureDto: CreateMeasureDto, @Req() req: Request) {
     const baseUrl = `${req.protocol}://${req.get('host')}`;
     return this.measuresService.createMeasure(createMeasureDto, baseUrl);
   }
@@ -23,9 +19,7 @@ export class MeasuresController {
   // Endpoint pada fazer confirmação da leitura.
   @Patch('confirm')
   @HttpCode(HttpStatus.OK)
-  async confirmMeasure(
-    @Body() confirmMeasureDto: ConfirmMeasureDto,
-  ) {
+  async confirmMeasure(@Body() confirmMeasureDto: ConfirmMeasureDto) {
     return this.measuresService.confirmMeasure(confirmMeasureDto);
   }
 }

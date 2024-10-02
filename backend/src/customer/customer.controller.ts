@@ -1,12 +1,21 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { Request } from 'express';
 
 @Controller()
 export class CustomerController {
-  constructor(private readonly customerService: CustomerService) { }
-
+  constructor(private readonly customerService: CustomerService) {}
 
   @Get('customers')
   async findAll() {
@@ -20,7 +29,7 @@ export class CustomerController {
     @Query('measure_type') measure_type?: string,
   ) {
     const baseUrl = `${req.protocol}://${req.get('host')}`;
-    return this.customerService.findSpecific(Number(customer_code),baseUrl,  measure_type);
+    return this.customerService.findSpecific(Number(customer_code), baseUrl, measure_type);
   }
 
   @Post('customers')

@@ -1,7 +1,6 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from "typeorm";
+import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from 'typeorm';
 
 export class CreateMeasuresTable1727729778624 implements MigrationInterface {
-
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -47,7 +46,7 @@ export class CreateMeasuresTable1727729778624 implements MigrationInterface {
             type: 'tinyint',
             length: '1',
             isNullable: true,
-            default: '0'
+            default: '0',
           },
           {
             name: 'image_url',
@@ -60,10 +59,13 @@ export class CreateMeasuresTable1727729778624 implements MigrationInterface {
       true,
     );
 
-    await queryRunner.createIndex('measures', new TableIndex({
-      name: 'customer_id_fk_idx',
-      columnNames: ['customer_id'],
-    }))
+    await queryRunner.createIndex(
+      'measures',
+      new TableIndex({
+        name: 'customer_id_fk_idx',
+        columnNames: ['customer_id'],
+      }),
+    );
 
     await queryRunner.createForeignKey(
       'measures',
@@ -81,5 +83,4 @@ export class CreateMeasuresTable1727729778624 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('measures');
   }
-
 }
