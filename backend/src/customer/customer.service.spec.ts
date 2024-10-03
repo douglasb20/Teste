@@ -18,8 +18,8 @@ describe('CustomerService', () => {
 
   const dataSourceTest: DataSourceOptions = {
     type: 'mysql',
-    host: 'sysmeterTest-db',
-    port: 3306,
+    host: 'localhost',
+    port: 3310,
     username: 'sysmeterTest',
     password: 'T9S5Ek3dBxd%',
     database: 'sysmeterTestdb',
@@ -100,7 +100,7 @@ describe('CustomerService', () => {
       const result = await service.findSpecific(1, baseUrl, 'WATER');
       expect(result).toEqual({
         customer_code: newCustomer.id,
-        measures: [newMeasure],
+        measures: [{...newMeasure, image_url: `${baseUrl}/images/${newMeasure.image_url}`}],
       });
     });
 
@@ -124,7 +124,7 @@ describe('CustomerService', () => {
       const result = await service.findSpecific(1, baseUrl);
       expect(result).toEqual({
         customer_code: newCustomer.id,
-        measures: [newMeasure],
+        measures: [{...newMeasure, image_url: `${baseUrl}/images/${newMeasure.image_url}`}],
       });
     });
   });
